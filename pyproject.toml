@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "scoop-notifier"
+version = "0.1.0"
+description = ""
+authors = ["tech189 <dlloyd189@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+win10toast = "^0.9"
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.11.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
