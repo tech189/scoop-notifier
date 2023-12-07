@@ -1,3 +1,4 @@
+import ast
 import subprocess
 from pathlib import Path
 from win10toast import ToastNotifier
@@ -80,18 +81,13 @@ def check_now():
     logging.debug(f"scoop_path:\t{scoop_path}\nbucket_dir\t{bucket_dir}")
 
     subprocess.run([scoop_path, "update"], shell=True)
-    scoop_status = subprocess.check_output([scoop_path, "status"], shell=True).decode("utf-8")
+    scoop_status = subprocess.getoutput("pwsh.exe -Command \"Set-Location " + str(scoop_path.parent) + "; .\scoop status | Select-Object -Expand Name | Join-String -Separator ',' -OutputPrefix 'Updates are available for: [' -OutputSuffix ']' -DoubleQuote\"")
 
     counter = 0
     updates = []
     for line in scoop_status.splitlines():
         if line[0:26] == ("Updates are available for:"):
-            counter = 1
-        elif counter == 1 and line[0] == (" "):
-            # print("Update: " + line + " adding: " + str(line.split(":")[0][4:]))
-            updates.append(line.split(":")[0][4:])
-        elif counter == 1 and line[0] != (" "):
-            counter = 0
+            updates = ast.literal_eval(line[26:])  
 
     notifier = ToastNotifier()
     update_count = len(updates)
