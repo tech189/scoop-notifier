@@ -80,10 +80,12 @@ def check_now():
 
     logging.debug(f"scoop_path:\t{scoop_path}\nbucket_dir\t{bucket_dir}")
 
+    # TODO make this not output text but have progress bar perhaps
     subprocess.run([scoop_path, "update"], shell=True)
-    scoop_status = subprocess.getoutput("pwsh.exe -Command \"Set-Location " + str(scoop_path.parent) + "; .\scoop status | Select-Object -Expand Name | Join-String -Separator ',' -OutputPrefix 'Updates are available for: [' -OutputSuffix ']' -DoubleQuote\"")
+    
+    # NoProfile - speed up loading PowerShell; Set-Location - because can't invoke directly, parent to get containing folder; Where-Object - only get apps with an update, not ones with other states; Select-Object - get just Name property; Join-String - wrap it in brackets and each app with double quotes and commas for Python
+    scoop_status = subprocess.getoutput("pwsh.exe -NoProfile -Command \"Set-Location " + str(scoop_path.parent) + "; .\scoop status | Where-Object -Property 'Latest Version' -NE '' | Select-Object -Expand Name | Join-String -Separator ',' -OutputPrefix 'Updates are available for: [' -OutputSuffix ']' -DoubleQuote\"")
 
-    counter = 0
     updates = []
     for line in scoop_status.splitlines():
         if line[0:26] == ("Updates are available for:"):
