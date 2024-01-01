@@ -97,12 +97,12 @@ def check_now():
 
     if updates == []:
         # TODO give option to show this, but off by default
-        notifier.show_toast("No updates available", str(bucket_count) + " buckets checked", duration = 5)
+        # notifier.show_toast("No updates available", str(bucket_count) + " buckets checked", duration = 5)
         exit()
     elif "Update failed." in scoop_status:
         # TODO give option to show this, but off by default
         # TODO also show this when "Update failed." appears in check variable - even if updates available in scoop status, if no internet connection then updates won't install
-        notifier.show_toast("Error updating", "😢 No internet connection", duration = 5)
+        notifier.show_toast("Error checking for Scoop updates", "😢 No internet connection", duration = 5)
         exit()
     else:
         if update_count > 1:

@@ -31,3 +31,12 @@ poetry run python scoop_notifier\notifier.py --install 180
 ```
 
 Now, every three hours Scoop will be updated and a notification will display if any of your apps have updates available.
+
+## Uninstallation
+
+Run the following in the same `scoop-notifier` folder you cloned originally to remove the scheduled update check:
+```
+poetry run python scoop_notifier\notifier.py --uninstall
+```
+
+Then you can delete the `scoop-notifier` folder.
